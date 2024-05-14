@@ -1,12 +1,24 @@
 import random
 
-def createBdd(dict, size):
-    bdd = ''
+def createBdd(size, variable):
+    bdd = "Bdd('("
+    conditions = []
+    for i in range(1, size + 1):
+        conditions.append(f"{variable}={i}")
+    bdd += " and ".join(conditions) + ")')"
+    return bdd
+
+def createBddWithRandomVariables(size, dictSize, dictNumPossibilities):
+    bdd = "Bdd('("
+    conditions = []
+    for i in range(1, size + 1):
+        conditions.append(f"{generateRandDictValue(dictSize)}={1}")
+    bdd += " and ".join(conditions) + ")')"
     return bdd
 
 
-def generateRandDictValue(dict_size):
-    highestLetterString = chr(97 + (dict_size // (26*26))) + chr(97 + ((dict_size // 26) % 26)) + chr(97 + (dict_size % 26))
+def generateRandDictValue(dictSize):
+    highestLetterString = chr(97 + (dictSize // (26*26))) + chr(97 + ((dictSize // 26) % 26)) + chr(97 + (dictSize % 26))
     randString = ''
     sameString = True
     for char in highestLetterString:
