@@ -15,7 +15,7 @@ def createDictionary(conn, schemaName):
 def insertValueIntoDictionary(conn, schemaName):
     cur = conn.cursor()
     insert_data_query = """
-        INSERT INTO """ + schemaName + """._dict(name,dict) VALUES ('mydict',dictionary(''));
+        INSERT INTO """ + schemaName + """._dict(name,dict) VALUES ('testDict',dictionary(''));
     """
     cur.execute(insert_data_query)
     cur.close()
