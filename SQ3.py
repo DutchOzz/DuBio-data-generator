@@ -7,11 +7,17 @@ import tableDataFunctions as tdf
 import tableFunctions as tf
 import queryFunctions as qf
 
+### -------------------------- SQ3.py -------------------------- ###
+# This tests the time taken to calculate the probabilities of a table 
+#    with a varying amount of possibilities per variable in the dictionary
+# The time taken to calculate the probabilities is measured and plotted against the amount of possibilities
+
 dictionarySize = 1000
 rowCount = 2520
 schemaName = "testSchema"
 maxAmountOfPossilibities = 10
 bddSize = 1
+runsPerInput = 100
 randomNess = False
 
 def setup(amountOfPossibilities):
@@ -19,19 +25,19 @@ def setup(amountOfPossibilities):
 
     df.dropDictionary(conn, schemaName)
     df.createDictionary(conn, schemaName)
-    df.addDictionaryEntries(conn, schemaName, dictionarySize, amountOfPossibilities)
+    df.addDictionaryEntries(conn, schemaName, dictionarySize // amountOfPossibilities, amountOfPossibilities)
 
     tf.drop_table(conn, schemaName, "drives")
     tf.create_table(conn, schemaName, "drives")
     if (randomNess):
-        tdf.insertRowsRandomBdd(conn, schemaName, "drives", rowCount, dictionarySize, amountOfPossibilities, bddSize)
+        tdf.insertRowsRandomBdd(conn, schemaName, "drives", rowCount, dictionarySize // amountOfPossibilities, amountOfPossibilities, bddSize)
     else:
-        tdf.insertRowsNoRandomness(conn, schemaName, "drives", rowCount, dictionarySize, amountOfPossibilities, bddSize)
+        tdf.insertRowsNoRandomness(conn, schemaName, "drives", rowCount, dictionarySize // amountOfPossibilities, amountOfPossibilities, bddSize)
 
     conn.commit()
     c.close(conn)
 
-def time_function(input):
+def time_function(input, runNumber):
     start = time.time()
 
     conn = c.connect()
@@ -41,9 +47,8 @@ def time_function(input):
 
     end = time.time()
     length = end - start
-    print("input: ", input, "time: ", length)
+    print("input: ", input, "run#: ", runNumber, "time: ", length)
     return length
-
 
 def plot_function(functionOutputs):
     x_values = range(1, maxAmountOfPossilibities + 1)
@@ -56,10 +61,13 @@ def plot_function(functionOutputs):
     plt.show()
 
 def runTest():
-    functionOutputs = []
+    averageOutputs = []
     for i in range(1, maxAmountOfPossilibities + 1):
         setup(i)
-        functionOutputs.append(time_function(i))
-    plot_function(functionOutputs)
+        functionOutputs = []
+        for j in range(runsPerInput):
+            functionOutputs.append(time_function(i, j))
+        averageOutputs.append(sum(functionOutputs) / len(functionOutputs))
+    plot_function(averageOutputs)
 
 runTest()
