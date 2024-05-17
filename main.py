@@ -1,22 +1,25 @@
-import connection
-import tableFunctions
-import tableDataFunctions
-import dictFunctions
-import bddFunctions
+import connection as c
+import bddFunctions as bf
+import dictFunctions as df
+import tableDataFunctions as tdf
+import tableFunctions as tf
+import queryFunctions as qf
 
-conn = connection.connect()
+schemaName = "testSchema"
+dictionarySize = 10
+rowCount = 2000
+amountOfPossibilities = 10
+conn = c.connect()
 
-# tableFunctions.drop_table(conn, "testSchema", "drives")
-# tableFunctions.create_table(conn, "testSchema", "drives")
-# tableFunctions.add_column(conn, "testSchema", "drives", "probability", "FLOAT")
-# tableFunctions.drop_column(conn, "testSchema", "drives", "probability")
-# tableDataFunctions.insert_data(conn, "testSchema", "drives", ["id", "person", "color", "car", "_sentence", "probability"], [["1", "'huhih'", "100", "25", "Bdd('A = 1')", "0.5"]])
-# dictFunctions.dropDictionary(conn, "testSchema")
-# dictFunctions.createDictionary(conn, "testSchema")
-# dictFunctions.addDictionaryEntries(conn, "testSchema", 3, 3)
+df.dropDictionary(conn, schemaName)
+df.createDictionary(conn, schemaName)
+df.addDictionaryEntries(conn, schemaName, dictionarySize, amountOfPossibilities)
 
-for i in range(1000):
-    bddFunctions.generateRandDictValue(100000)
+tf.drop_table(conn, schemaName, "drives")
+tf.create_table(conn, schemaName, "drives")
+tdf.insertRowsRandomBdd(conn, schemaName, "drives", rowCount, dictionarySize, amountOfPossibilities, 1)
+
+qf.calculateProbabilities(conn, schemaName, "drives")
+
 conn.commit()
-
-connection.close(conn)
+c.close(conn)

@@ -10,7 +10,6 @@ def connect():
         password = config.pwd, 
         port = config.port_id
         )
-    print("Connected to the database")
     return conn
 
 # Close the connection to the database

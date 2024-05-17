@@ -25,19 +25,19 @@ def dropDictionary(conn, schemaName):
     tf.drop_table(conn, schemaName, "_dict")
 
 # add dictionary entries to the dictionary table
-def addDictionaryEntries(conn, schemaName, number_of_letters, number_of_possibilities):
+def addDictionaryEntries(conn, schemaName, number_of_letters, number_of_possibilities, randomness):
     cur = conn.cursor()
 
     add_dict_entry_query = """
         update """ + schemaName + """._dict
-        set dict = add(dict,\'""" + generate_string(number_of_letters, number_of_possibilities) + """\')
+        set dict = add(dict,\'""" + generate_string(number_of_letters, number_of_possibilities, randomness) + """\')
     """
     cur.execute(add_dict_entry_query)
 
     cur.close()
 
 
-def generate_string(num_letters, num_numbers):
+def generate_string(num_letters, num_numbers, randomness):
     assert num_letters <= 26*26*26, "The number of letters must be less than or equal to 26*26*26"
 
     result = ''
@@ -46,10 +46,13 @@ def generate_string(num_letters, num_numbers):
         
         remaining_probability = 1.0
         for j in range(1, num_numbers + 1):
-            if j == num_numbers:
-                probability = remaining_probability
+            if (randomness):
+                if j == num_numbers:
+                    probability = remaining_probability
+                else:
+                    probability = random.uniform(0, remaining_probability)
+                remaining_probability -= probability
             else:
-                probability = random.uniform(0, remaining_probability)
+                probability = remaining_probability / (num_numbers)
             result += f"{letter}={j}:{probability:.2f};"
-            remaining_probability -= probability
     return result[:-1]  # Remove the last ';' character
