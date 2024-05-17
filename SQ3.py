@@ -1,4 +1,3 @@
-import time
 import matplotlib.pyplot as plt
 import connection as c
 import bddFunctions as bf
@@ -38,17 +37,13 @@ def setup(amountOfPossibilities):
     c.close(conn)
 
 def time_function(input, runNumber):
-    start = time.time()
-
     conn = c.connect()
-    qf.calculateProbabilities(conn, schemaName, "drives")
+    time = qf.timeCalculateProbabilities(conn, schemaName, "drives")
     conn.commit()
     c.close(conn)
 
-    end = time.time()
-    length = end - start
     print("input: ", input, "run#: ", runNumber, "time: ", length)
-    return length
+    return time
 
 def plot_function(functionOutputs):
     x_values = range(1, maxAmountOfPossilibities + 1)

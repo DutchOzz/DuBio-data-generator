@@ -14,7 +14,7 @@ import queryFunctions as qf
 dictionarySize = 1000
 rowCount = 2520
 schemaName = "testSchema"
-amountOfTests = 80
+amountOfTests = 300
 amountOfPossibilities = 1
 bddSize = 1
 randomNess = False
@@ -34,16 +34,12 @@ def setup(amountOfPossibilities):
     c.close(conn)
 
 def time_function():
-    start = time.time()
-
     conn = c.connect()
-    qf.calculateProbabilities(conn, schemaName, "drives")
+    time  = qf.calculateProbabilities(conn, schemaName, "drives")
     conn.commit()
     c.close(conn)
 
-    end = time.time()
-    length = end - start
-    return length
+    return time
 
 def plot_function(functionOutputs):
     x_values = range(1, amountOfTests + 1)
