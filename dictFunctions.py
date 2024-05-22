@@ -25,7 +25,7 @@ def dropDictionary(conn, schemaName):
     tf.drop_table(conn, schemaName, "_dict")
 
 # add dictionary entries to the dictionary table
-def addDictionaryEntries(conn, schemaName, number_of_letters, number_of_possibilities, randomness):
+def addDictionaryEntries(conn, schemaName, number_of_letters, number_of_possibilities, randomness = False):
     cur = conn.cursor()
 
     add_dict_entry_query = """
