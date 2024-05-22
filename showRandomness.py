@@ -19,7 +19,7 @@ amountOfPossibilities = 1
 bddSize = 1
 randomNess = False
 
-def setup(amountOfPossibilities):
+def setup():
     conn = c.connect()
 
     df.dropDictionary(conn, schemaName)
@@ -28,7 +28,7 @@ def setup(amountOfPossibilities):
 
     tf.drop_table(conn, schemaName, "drives")
     tf.create_table(conn, schemaName, "drives")
-    tdf.insertRowsNoRandomness(conn, schemaName, "drives", rowCount, dictionarySize // amountOfPossibilities, amountOfPossibilities, bddSize)
+    tdf.insertRows(conn, schemaName, "drives", rowCount, dictionarySize // amountOfPossibilities, amountOfPossibilities, bddSize)
 
     conn.commit()
     c.close(conn)
@@ -46,14 +46,14 @@ def plot_function(functionOutputs):
     y_values = functionOutputs
     plt.plot(x_values, y_values)
     plt.xlabel('Run')
-    plt.ylabel('Seconds')
+    plt.ylabel('Milliseconds')
     plt.title('Function Plot')
     plt.grid(True)
     plt.show()
 
 def runTest():
     functionOutputs = []
-    setup(amountOfPossibilities)
+    setup()
     for i in range(1, amountOfTests + 1):
         functionOutputs.append(time_function())
     plot_function(functionOutputs)
