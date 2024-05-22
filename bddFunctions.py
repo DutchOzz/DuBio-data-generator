@@ -1,36 +1,36 @@
 import random
 
-def createBdd(size, variable, value):
-    bdd = "Bdd('("
-    conditions = []
-    for i in range(1, size + 1):
-        conditions.append(f"{variable}={value}")
-    bdd += " and ".join(conditions) + ")')"
-    return bdd
+def createBdd(size, value, dictSize, combiner):
+    variable = 'aaa' # optimisable
+    if (size == 1):
+        return f"Bdd('({variable}={value})')"
+    else:
+        bdd = "Bdd('("
+        conditions = []
 
-def createBddWithRandomVariables(size, dictSize, dictNumPossibilities):
-    bdd = "Bdd('("
-    conditions = []
-    for i in range(1, size + 1):
-        conditions.append(f"{generateRandDictValue(dictSize)}={i%dictNumPossibilities}")
-    bdd += " and ".join(conditions) + ")')"
-    return bdd
+        for i in range(1, size + 1):
+            conditions.append(f"{variable}={value}")
+            if (i != size):
+                variable = incrementVariable(variable, dictSize)
+
+        match combiner:
+            case '&':
+                bdd += " & ".join(conditions) + ")')"
+            case '|':
+                bdd += " | ".join(conditions) + ")')"
+            case '&!':
+                bdd += " & ".join([f"!{condition}" for condition in conditions]) + ")')"
+            case '|!':
+                bdd += " | ".join([f"!{condition}" for condition in conditions]) + ")')"
+        return bdd
+
+def incrementVariable(variable, dictSize):
+    ordA = 97
+    index = (ord(variable[0]) - ordA) * 26 * 26 + (ord(variable[1]) - ordA) * 26 + ord(variable[2]) - ordA
+    index += 1
+    return getDictValue(index, dictSize)
 
 def getDictValue(i, dictSize):
     index = i % dictSize
     char = chr(97 + (index // (26*26))) + chr(97 + ((index // 26) % 26)) + chr(97 + (index % 26))
     return char
-
-def generateRandDictValue(dictSize):
-    highestLetterString = chr(97 + (dictSize // (26*26))) + chr(97 + ((dictSize // 26) % 26)) + chr(97 + (dictSize % 26) - 1)
-    randString = ''
-    sameString = True
-    for char in highestLetterString:
-        if not sameString:
-            randString += chr(random.randint(97, ord('z')))
-        else:
-            newChar = chr(random.randint(97, ord(char)))
-            if char != newChar:
-                sameString = False
-            randString += newChar
-    return randString
