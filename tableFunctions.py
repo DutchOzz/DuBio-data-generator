@@ -19,7 +19,6 @@ def drop_table(conn, schemaName, tableName):
     drop_table_query = """
         drop table """ + schemaName + "." + tableName +  """;
     """
-
     cur.execute(drop_table_query)
     cur.close()
 
