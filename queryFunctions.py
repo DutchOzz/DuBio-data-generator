@@ -86,3 +86,33 @@ def updateDictionaryWithCache(conn, schemaName, tableName, amountOfPossibilities
     cur.close()
 
     return totalExecutionTime
+
+def smartUpdateDictionaryWithCache(conn, schemaName, tableName, amountOfPossibilities = 10):
+    cur = conn.cursor()
+
+    update_dictionary_query = """
+        UPDATE """ + schemaName + """._dict SET dict = upd(dict, 'aaa=1:1
+    """
+    for i in range(amountOfPossibilities - 1):
+        update_dictionary_query += ";aaa=" + str(i+2) + ":0"
+    update_dictionary_query += "');"
+
+    update_table_query = """
+        UPDATE """ + schemaName + """."""+ tableName + """
+        SET probability = prob(d.dict, _sentence)
+        FROM """ + schemaName + """._dict d
+        WHERE """ + schemaName + """."""+ tableName + """.person LIKE '%rank%';
+    """
+
+    cur.execute("BEGIN;")
+    cur.execute(cur.mogrify('explain analyze ' + update_dictionary_query))
+    analyze_fetched = cur.fetchall()
+    cur.execute(cur.mogrify('explain analyze ' + update_table_query))
+    analyze_fetched2 = cur.fetchall()
+    cur.execute("ROLLBACK;")
+    executionTime = float(analyze_fetched[-1][0][16:21])
+    executionTime2 = float(analyze_fetched2[-1][0][16:21])
+    totalExecutionTime = executionTime + executionTime2
+    cur.close()
+
+    return totalExecutionTime

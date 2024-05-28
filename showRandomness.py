@@ -12,7 +12,7 @@ import queryFunctions as qf
 # The time taken to calculate the probabilities is measured and plotted against the run number
 
 dictionarySize = 1000
-rowCount = 2520
+rowCount = 25200
 schemaName = "testSchema"
 amountOfTests = 300
 amountOfPossibilities = 1
@@ -51,11 +51,21 @@ def plot_function(functionOutputs):
     plt.grid(True)
     plt.show()
 
+def polt_histogram(functionOutputs):
+    plt.hist(functionOutputs, bins=20)
+    plt.xlabel('Milliseconds')
+    plt.ylabel('Frequency')
+    plt.title('Function Plot')
+    plt.grid(True)
+    plt.show()
+
 def runTest():
     functionOutputs = []
     setup()
+    print("set up!")
     for i in range(1, amountOfTests + 1):
         functionOutputs.append(time_function())
-    plot_function(functionOutputs)
+        print("run " + str(i) + " done!")
+    polt_histogram(functionOutputs)
 
 runTest()

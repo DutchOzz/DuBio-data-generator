@@ -64,11 +64,9 @@ def plot_function(withResults, withoutResults):
     plt.xlabel('Results', fontweight ='bold', fontsize = 15) 
     plt.ylabel('Time', fontweight ='bold', fontsize = 15) 
     plt.xticks([r + barWidth - 0.125 for r in range(len(withResults))], 
-            ['Calculate\nProbabilities', 
-             'Select',
+            ['Calculate\nProbabilities',
              'Update\nDictionary'
              ])
-    
     plt.legend()
     plt.show() 
 
@@ -84,18 +82,6 @@ def runTests():
     for i in range(amountOfTests):
         withoutCache = time_function(qf.calculateProbabilities, "without", i)
         withCache = time_function(qf.getCachedProbabilities, "with", i)
-        tempWithoutCacheResults.append(withoutCache)
-        tempWithCacheResults.append(withCache)
-    withoutCacheResults.append(stat.fmean(tempWithoutCacheResults))
-    withCacheResults.append(stat.fmean(tempWithCacheResults))
-
-    tempWithoutCacheResults = []
-    tempWithCacheResults = []
-
-    # Select whole table
-    for i in range(amountOfTests):
-        withoutCache = time_function(qf.selectTable, "without", i)
-        withCache = time_function(qf.selectTable, "with", i)
         tempWithoutCacheResults.append(withoutCache)
         tempWithCacheResults.append(withCache)
     withoutCacheResults.append(stat.fmean(tempWithoutCacheResults))

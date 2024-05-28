@@ -17,7 +17,7 @@ def insertRows(conn, schemaName, tableName, rowCount, dictionarySize, amountOfPo
 
     cur.close()
 
-def insertRowsWithCache(conn, schemaName, tableName, rowCount, dictionarySize, amountOfPossibilities, bddSize, bddCombiner = '&'):
+def insertRowsWithCache(conn, schemaName, tableName, rowCount, dictionarySize, amountOfPossibilities, bddSize, bddCombiner = '&', name = "person"):
     cur = conn.cursor()
 
     insert_data_query = """
@@ -29,7 +29,7 @@ def insertRowsWithCache(conn, schemaName, tableName, rowCount, dictionarySize, a
         for j in range(amountOfPossibilities):
             bdd = bddFunctions.createBdd(bddSize, f"{j + 1}", dictionarySize, bddCombiner)
             insert_data_query += """
-                (""" + str(i) + """, 'person""" + str(i) + """', 'color""" + str(j) + """', 'car""" + str(j) + """', """ + bdd + """, """ + str(probability) + """),"""
+                (""" + str(i) + """, '""" + name + str(i) + """', 'color""" + str(j) + """', 'car""" + str(j) + """', """ + bdd + """, """ + str(probability) + """),"""
     insert_data_query = insert_data_query[:-1] + ";"
     cur.execute(insert_data_query)
 

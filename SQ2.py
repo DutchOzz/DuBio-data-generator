@@ -72,8 +72,8 @@ def analyzeResults(allResults):
     print('mean[' + str(highestDiffMeanCombiner2) + ']: ' + str(allMeans[highestDiffMeanCombiner2][highestDiffMeanIndex]))
     print('standard deviation[' + str(highestDiffMeanCombiner1) + ']: ' + str(stat.stdev(allResults[highestDiffMeanCombiner1][highestDiffMeanIndex])))
     print('standard deviation[' + str(highestDiffMeanCombiner2) + ']: ' + str(stat.stdev(allResults[highestDiffMeanCombiner2][highestDiffMeanIndex])))
-    PSV = (stat.stdev(allResults[highestDiffMeanCombiner1][highestDiffMeanIndex]) + stat.stdev(allResults[highestDiffMeanCombiner2][highestDiffMeanIndex])) / 2
-    print('PSV: ', PSV)
+    # PSV = (stat.stdev(allResults[highestDiffMeanCombiner1][highestDiffMeanIndex]) + stat.stdev(allResults[highestDiffMeanCombiner2][highestDiffMeanIndex])) / 2
+    # print('PSV: ', PSV)
 
 def plot_function(results1, results2, results3, results4):
     x_values = range(1, maxBDDsize + 1)

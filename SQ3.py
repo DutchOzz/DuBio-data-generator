@@ -11,7 +11,7 @@ import queryFunctions as qf
 #    with a varying amount of possibilities per variable in the dictionary
 # The time taken to calculate the probabilities is measured and plotted against the amount of possibilities
 
-dictionarySize = 1000
+dictionarySize = 2520
 rowCount = 2520
 schemaName = "testSchema"
 maxAmountOfPossilibities = 20
