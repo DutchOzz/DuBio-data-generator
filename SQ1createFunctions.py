@@ -11,7 +11,7 @@ import queryFunctions as qf
 ### -------------------------- createFunctions.py -------------------------- ###
 
 dictionarySize = 1000
-rowCount = 252
+rowCount = 25
 amountOfTests = 100
 schemaName = "testSchema"
 amountOfPossibilities = 10
@@ -49,7 +49,7 @@ def setup(i):
 
 def time_function(queryfunction, tableName, i, j):
     conn = c.connect()
-    time = queryfunction(conn, schemaName, tableName)
+    time = queryfunction(conn, schemaName, tableName, rowCount * (j+1), dictionarySize // amountOfPossibilities, amountOfPossibilities, bddSize)
     conn.commit()
     c.close(conn)
 
@@ -76,14 +76,16 @@ def plot_function(results):
 
 def runTest():
     generalSetup()
+    for i in range(amountOfTests):
+        setup(i)
     results = []
 
     for i in range(amountOfTests):
-        setup(i)
+        # setup(i)
         tempResults = []
         for j in range(runsPerInput):
-            withRes = time_function(qf.updateDictionaryWithCache, "with", j, i)
-            withoutRes = time_function(qf.updateDictionary, "without", j, i)
+            withRes = time_function(qf.timeInsertRowsWithCache, "with", j, i)
+            withoutRes = time_function(qf.timeInsertRows, "without", j, i)
             tempResults.append(withoutRes - withRes)
         results.append(stat.mean(tempResults))
 
