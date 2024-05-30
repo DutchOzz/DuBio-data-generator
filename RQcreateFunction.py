@@ -19,6 +19,8 @@ def setupDictionary(dictionarySize, amountOfPossibilities):
     conn.commit()
     c.close(conn)
 
+    print("Dictionary setup complete")
+
 def addDictionaryEntries(dictionarySize, amountOfPossibilities):
     conn = c.connect()
 
