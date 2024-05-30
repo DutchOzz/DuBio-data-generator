@@ -2,12 +2,14 @@ import psycopg2
 import connection
 
 # Create a table in the database
-def create_table(conn, schemaName, tableName):
+def create_table(conn, schemaName, tableName, columnAmount):
     cur = conn.cursor()
-
+    colAmountToAdd = columnAmount - 2
     create_table_query = """
-        create table """ + schemaName + "." + tableName +  """ (like pp2324_37.drives including all);
-    """
+        create table """ + schemaName + "." + tableName +  """ (id int, """
+    for i in range(97, colAmountToAdd+97):
+        create_table_query += chr(i) + """ varchar(255), """
+    create_table_query += """ _sentence bdd) """
 
     cur.execute(create_table_query)
     cur.close()
