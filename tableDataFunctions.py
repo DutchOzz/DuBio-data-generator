@@ -22,7 +22,7 @@ def insertRowsWithCache(conn, schemaName, tableName, columnAmount, rowCount, dic
     cur = conn.cursor()
 
     insert_data_query = """
-                insert into """ + schemaName + "." + tableName + """ (id, person, color, car, _sentence, probability) values 
+                insert into """ + schemaName + "." + tableName + """ values 
         """
     probability = 1/amountOfPossibilities
     for i in range(rowCount // amountOfPossibilities):

@@ -4,18 +4,16 @@ import dictFunctions as df
 import tableDataFunctions as tdf
 import tableFunctions as tf
 import queryFunctions as qf
+import RQcreateFunction as rqf
 
-schemaName = "testschema"
-columnAmount = 10
-dictionarySize = 100
-rowCount = 2520
-amountOfPossibilities = 10
+schemaName = "testSchema"
+
+rqf.setupTables(2)
+rqf.addRows(2, 2520, 1, 1, 2520)
+rqf.setupDictionary(2520, 1)
+
 conn = c.connect()
-bddSize = 1
-
-tf.drop_table(conn, schemaName, "with")
-tf.create_table(conn, schemaName, "with", columnAmount)
-tdf.insertRows(conn, schemaName, "with", columnAmount, rowCount, dictionarySize, amountOfPossibilities, bddSize=bddSize)
-
+# rqf.runQuery(conn, qf.updateDictionaryWithCache, qf.updateDictionary, 2)
+qf.updateDictionary(conn, schemaName, "without")
 conn.commit()
 c.close(conn)

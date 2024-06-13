@@ -8,7 +8,7 @@ import tableFunctions as tf
 import queryFunctions as qf
 
 dictionarySize = 1000
-rowCount = 1000000
+rowCount = 2520
 schemaName = "testSchema"
 runAmount = 1000
 amountOfPossibilities = 10
