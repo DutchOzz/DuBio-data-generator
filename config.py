@@ -1,5 +1,5 @@
-hostname = 'castle.ewi.utwente.nl'
-database = 'pp2324_37'
-username = 'pp2324_37'
-pwd = 'CjjQYvtM'
+hostname = 'HOSTNAME'
+database = 'DATABASE'
+username = 'USERNAME'
+pwd = 'PASSWORD'
 port_id = 5432
