@@ -9,14 +9,14 @@ import tableFunctions as tf
 ### -------------------------- createFunctions.py -------------------------- ###
 
 schemaName = "testSchema"
-runsPerInput = 5
+runsPerInput = 200
 
 #ranges
 rowCountRange = [2520*i for i in range(1, 11)]
 bddSizeRange = list(range(1, 11))
-dictionarySizeRange = [10*i for i in range(1, 1001)]
-amountOfPossibilitiesRange = list(range(1, 11))
-columnAmountRange = list(range(2, 11))
+dictionarySizeRange = [2520*i for i in range(1, 11)]
+amountOfPossibilitiesRange = list(range(1, 21))
+columnAmountRange = list(range(11, 21))
 
 #default values, set to be the fastest within the lists
 r = rowCountRange[0]

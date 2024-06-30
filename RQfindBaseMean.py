@@ -7,13 +7,13 @@ import statistics as stat
 schemaName = "testSchema"
 
 rqf.setupTables(2)
-rqf.addRows(2, 10, 10, 1, 2520)
-rqf.setupDictionary(10, 10)
+rqf.addRows(2, 2520, 10, 1, 2520)
+rqf.setupDictionary(2520, 10)
 
 results = []
 conn = c.connect()
-for i in range(200):
-    results.append(rqf.runQuery(conn, qf.getCachedProbabilities, qf.calculateProbabilities, i))
+for i in range(100):
+    results.append(rqf.runQuery(conn, qf.updateDictionaryWithCache, qf.updateDictionary, i))
 conn.commit()
 c.close(conn)
 

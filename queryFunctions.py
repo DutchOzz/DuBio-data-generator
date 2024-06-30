@@ -123,7 +123,7 @@ def timeInsertRowsWithCache(conn, schemaName, tableName, rowCount, dictionarySiz
     cur = conn.cursor()
 
     insert_data_query = """
-                insert into """ + schemaName + "." + tableName + """ (id, person, color, car, _sentence, probability) values 
+                insert into """ + schemaName + "." + tableName + """ (id, _sentence, probability) values 
         """
     probability = 1/amountOfPossibilities
     for i in range(rowCount // amountOfPossibilities):
@@ -131,7 +131,7 @@ def timeInsertRowsWithCache(conn, schemaName, tableName, rowCount, dictionarySiz
         for j in range(amountOfPossibilities):
             bdd = bddFunctions.createBdd(bddSize, f"{j + 1}", dictionarySize, bddCombiner)
             insert_data_query += """
-                (""" + str(i) + """, '""" + name + str(i) + """', 'color""" + str(j) + """', 'car""" + str(j) + """', """ + bdd + """, """ + str(probability) + """),"""
+                (""" + str(i) + """, """ + bdd + """, """ + str(probability) + """),"""
     insert_data_query = insert_data_query[:-1] + ";"
 
     cur.execute("BEGIN;")
@@ -147,14 +147,14 @@ def timeInsertRows(conn, schemaName, tableName, rowCount, dictionarySize, amount
     cur = conn.cursor()
 
     insert_data_query = """
-                insert into """ + schemaName + "." + tableName + """ (id, person, color, car, _sentence) values 
+                insert into """ + schemaName + "." + tableName + """ (id, _sentence) values 
         """
     for i in range(rowCount // amountOfPossibilities):
         # var = bddFunctions.getDictValue(i, dictionarySize)
         for j in range(amountOfPossibilities):
             bdd = bddFunctions.createBdd(bddSize, f"{j + 1}", dictionarySize, bddCombiner)
             insert_data_query += """
-                (""" + str(i) + """, 'person""" + str(i) + """', 'color""" + str(j) + """', 'car""" + str(j) + """', """ + bdd + """),"""
+                (""" + str(i) + """, """ + bdd + """),"""
     insert_data_query = insert_data_query[:-1] + ";"
 
     cur.execute("BEGIN;")

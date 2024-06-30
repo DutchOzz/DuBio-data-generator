@@ -13,12 +13,13 @@ import queryFunctions as qf
 # The time taken to calculate the probabilities is measured and plotted against the BDD size
 # the BDDS are all constrained to have the variables [aaa, aab, ... , zzz] in that order
 
-dictionarySize = 1000
+dictionarySize = 2520
 rowCount = 2520
 schemaName = "testSchema"
 maxBDDsize = 10
-runsPerSize = 1000
+runsPerSize = 100
 amountOfPossibilities = 10
+columnAmount = 2
 bddCombiners = ['&', '|', '&!', '|!']
 
 def generalSetup():
@@ -35,19 +36,19 @@ def setup(bddSize, combiner):
     conn = c.connect()
 
     tf.drop_table(conn, schemaName, "drives")
-    tf.create_table(conn, schemaName, "drives")
-    tdf.insertRows(conn, schemaName, "drives", rowCount, dictionarySize // amountOfPossibilities, amountOfPossibilities, bddSize, combiner)
+    tf.create_table(conn, schemaName, "drives", columnAmount)
+    tdf.insertRows(conn, schemaName, "drives", columnAmount, rowCount, dictionarySize // amountOfPossibilities, amountOfPossibilities, bddSize, combiner)
 
     conn.commit()
     c.close(conn)
 
 def time_function(bddSize, runNumber, conn):
-    #conn = c.connect()
+    conn = c.connect()
     time = qf.calculateProbabilities(conn, schemaName, "drives")
     conn.commit()
-    #c.close(conn)
+    c.close(conn)
 
-    #print("bddSize: ", bddSize, "run#: ", runNumber, "time: ", time)
+    print("bddSize: ", bddSize, "run#: ", runNumber, "time: ", time)
     return time
 
 def analyzeResults(allResults):
@@ -88,20 +89,6 @@ def plot_function(results1, results2, results3, results4):
     plt.legend()
     plt.show()
 
-def runTest():
-    generalSetup()
-    allResults = []
-    for combiner in bddCombiners:
-        averageOutputs = []
-        for i in range(1, maxBDDsize + 1):
-            setup(i, combiner)
-            total = 0
-            for j in range(1, runsPerSize + 1):
-                total += time_function(i, j)
-            averageOutputs.append(total/runsPerSize)
-        allResults.append(averageOutputs)
-    plot_function(allResults[0], allResults[1], allResults[2], allResults[3])
-
 def runTestAnalyse():
     generalSetup()
     allResults = []
@@ -119,6 +106,9 @@ def runTestAnalyse():
             c.close(conn)
         allResults.append(allOutputs)
     analyzeResults(allResults)
+    with open('SQ2results.txt', 'a') as file:
+        file.write(f"results: {list(allResults)}\n")
+        
     plot_function([stat.mean(allResults[0][i]) for i in range(len(allResults[0]))], 
                   [stat.mean(allResults[1][i]) for i in range(len(allResults[1]))],
                     [stat.mean(allResults[2][i]) for i in range(len(allResults[2]))],

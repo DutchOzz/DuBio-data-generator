@@ -10,35 +10,45 @@ import numpy as np
 schemaName = "testSchema"
 
 # Set values
-r = 2520
+r = 10
 b = 1
-d = 2520
+d = 10
 a = 10
 v = 2
 
 # -------------- Calculate probabilities -------------- #
 
 # Set base mean
-baseMean = 232.4
+# baseMean = 232.4
 
-# queries
+# # queries
 withQuery = qf.getCachedProbabilities
 withoutQuery = qf.calculateProbabilities
 queryRunAmount = 5
 
-# functions
-rowCountFunction = lambda b: 0.091 * b + 3.24
-dictSizeFunction = lambda b: 2**np.floor(np.log2(b))/7.36 - (0.06175* (b- 2**np.floor(np.log2(b))))
-amountOfPossibilitiesFunction = lambda b: 10**(-1.28 * (np.log10((b))) + 2.61) + 229.7
-bddSizeFunction = lambda b: 0.7 * b + 229.3
-columnAmountFunction = lambda b: baseMean
+# # functions
+# rowCountFunction = lambda b: 0.091 * b + 3.24
+# dictSizeFunction = lambda b: 2**np.floor(np.log2(b))/7.36 - (0.06175* (b- 2**np.floor(np.log2(b))))
+# amountOfPossibilitiesFunction = lambda b: 10**(-1.28 * (np.log10((b))) + 2.61) + 229.7
+# bddSizeFunction = lambda b: 0.7 * b + 229.3
+# columnAmountFunction = lambda b: baseMean
 
-# Update dictionary
-# rowCountFunction = 
-# dictSizeFunction = 
-# amountOfPossibilitiesFunction = 
-# bddSizeFunction = 
-# columnAmountFunction = 
+# -------------- Update dictionary -------------- #
+
+# Set base mean
+baseMean = -300
+
+# queries
+# withQuery = qf.updateDictionaryWithCache
+# withoutQuery = qf.updateDictionary
+# queryRunAmount = 5
+
+# functions
+rowCountFunction = lambda b: -0.0956484 * b - 11.1659
+dictSizeFunction = lambda b: 2**np.floor(np.log2(b))/-6.94 + (0.0659* (b- 2**np.floor(np.log2(b))))
+amountOfPossibilitiesFunction = lambda b: -334 - 386/b**100 # = 720-334/b^100 + 334 * - 1
+bddSizeFunction = lambda b: baseMean
+columnAmountFunction = lambda b: baseMean
 
 
 def runQueries():
@@ -66,6 +76,6 @@ def runFunctions():
     print(timessed)
     print(baseMean * timessed)
 
-# runQueries()
+runQueries()
 runFunctions()
 
